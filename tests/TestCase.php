@@ -2,9 +2,9 @@
 
 namespace Gamevault\Pensopay\Tests;
 
+use Gamevault\Pensopay\PensopayServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Gamevault\Pensopay\PensopayServiceProvider;
 
 class TestCase extends Orchestra
 {
