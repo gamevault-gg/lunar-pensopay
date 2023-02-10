@@ -44,7 +44,6 @@ class Pensopay extends AbstractPayment
 
         //ToDo Handle if autoCapture is enabled
         if ($paymentResponse->state == PaymentEnum::Authorized) {
-
         }
 
         if ($this->cart) {
