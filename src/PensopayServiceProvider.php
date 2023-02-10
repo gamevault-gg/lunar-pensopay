@@ -17,7 +17,7 @@ class PensopayServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('lunar-pensopay')
-            ->hasConfigFile()
+            ->hasConfigFile('pensopay')
             ->hasViews()
             ->hasMigration('create_lunar-pensopay_table')
             ->hasCommand(PensopayCommand::class);

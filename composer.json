@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.1",
+        "lunarphp/lunar": "0.2-rc1",
         "spatie/laravel-package-tools": "^1.14.0",
         "illuminate/contracts": "^9.0"
     },
