@@ -4,11 +4,31 @@ namespace Gamevault\Pensopay\Services;
 
 use Carbon\Carbon;
 use DateTimeInterface;
+use Gamevault\Pensopay\Enums\FacilitatorEnum;
 use Illuminate\Http\Client\Response;
+use Lunar\Models\Cart;
 use Lunar\Models\Currency;
+use Lunar\Models\Order;
+use Lunar\Models\Price;
 
 class PaymentService extends BaseClient
 {
+    /**
+     * Get single payment by id
+     *
+     * @param int $paymentId
+     *
+     * @return Response
+     */
+    public function getPayment(int $paymentId): Response
+    {
+        $queryParams = [
+            'payment' => $paymentId,
+        ];
+
+        return $this->pendingRequest->get($this->url(), $queryParams);
+    }
+
     /**
      * Returns a paginated list of payments
      *
@@ -62,9 +82,59 @@ class PaymentService extends BaseClient
         }
 
         //Todo make class to store response.
-        $response = $this->pendingRequest->get($this->url(), $queryParams);
+        return $this->pendingRequest->get($this->url(), $queryParams);
+    }
 
-        return $response;
+    /**
+     * Create a new payment in the pending state, once the user has paid state will change to authorized and we'll send a callback
+     *
+     * @param Order $order
+     * @param FacilitatorEnum $facilitator
+     * @param bool $autoCapture
+     * @param bool $testMode
+     * @param string|null $successUrl
+     * @param string|null $cancelUrl
+     * @param string|null $callbackUrl
+     *
+     * @return Response
+     */
+    public function createPayment(
+        Order $order,
+        FacilitatorEnum $facilitator,
+        bool $autoCapture = false,
+        bool $testMode = false,
+        string $successUrl = null,
+        string $cancelUrl = null,
+        string $callbackUrl = null,
+    ): Response {
+        $payload = [
+            'order_id'    => $order->getAttributes()['id'],
+            'facilitator' => $facilitator,
+            'amount'      => $order->getAttributes()['total'],
+            'currency'    => $order->getAttributes()['currency_code'],
+            'testmode'    => $testMode,
+            'autocapture' => $autoCapture,
+        ];
+
+        if ($successUrl != null) {
+            $payload = array_merge($payload, [
+                 'success_url' => $successUrl,
+            ]);
+        }
+
+        if ($cancelUrl != null) {
+            $payload = array_merge($payload, [
+                'cancel_url' => $cancelUrl,
+            ]);
+        }
+
+        if ($callbackUrl != null) {
+            $payload = array_merge($payload, [
+                'callback_url' => $callbackUrl,
+            ]);
+        }
+
+        return $this->pendingRequest->post($this->url(), $payload);
     }
 
     /**
