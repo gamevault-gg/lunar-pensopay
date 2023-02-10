@@ -12,13 +12,12 @@ class PaymentService extends BaseClient
     /**
      * Returns a paginated list of payments
      *
-     * @param int $perPage
-     * @param int $page
-     * @param string|null $orderId
-     * @param Currency|null $currency
-     * @param DateTimeInterface|string|null $fromDate
-     * @param DateTimeInterface|string|null $toDate
-     *
+     * @param  int  $perPage
+     * @param  int  $page
+     * @param  string|null  $orderId
+     * @param  Currency|null  $currency
+     * @param  DateTimeInterface|string|null  $fromDate
+     * @param  DateTimeInterface|string|null  $toDate
      * @return Response
      */
     public function getPayments(
@@ -31,13 +30,13 @@ class PaymentService extends BaseClient
     ): Response {
         $queryParams = [
             'per_page' => $perPage,
-            'page'     => $page,
+            'page' => $page,
         ];
 
         if ($orderId != null) {
-           $queryParams = array_merge($queryParams, [
+            $queryParams = array_merge($queryParams, [
                 'order_id' => $orderId,
-           ]);
+            ]);
         }
 
         if ($currency != null) {

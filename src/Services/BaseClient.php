@@ -16,5 +16,4 @@ abstract class BaseClient
             ->acceptJson()
             ->throw();
     }
-
 }

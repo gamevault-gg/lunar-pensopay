@@ -13,13 +13,11 @@ class Pensopay extends AbstractPayment
 {
     public function __construct(protected PaymentService $paymentService)
     {
-
     }
 
     public function authorize(): PaymentAuthorize
     {
         $this->paymentService->getPayments();
-
     }
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund
