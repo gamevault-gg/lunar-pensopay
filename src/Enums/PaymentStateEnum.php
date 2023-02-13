@@ -2,7 +2,7 @@
 
 namespace Gamevault\Pensopay\Enums;
 
-enum PaymentEnum: string
+enum PaymentStateEnum: string
 {
     case Pending = 'pending';
     case Authorized = 'authorized';

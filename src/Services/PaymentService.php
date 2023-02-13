@@ -5,6 +5,7 @@ namespace Gamevault\Pensopay\Services;
 use Carbon\Carbon;
 use DateTimeInterface;
 use Gamevault\Pensopay\Enums\FacilitatorEnum;
+use Gamevault\Pensopay\Responses\PaymentResponse;
 use Illuminate\Http\Client\Response;
 use Lunar\Models\Currency;
 use Lunar\Models\Order;
@@ -92,7 +93,7 @@ class PaymentService extends BaseClient
      * @param  string|null  $successUrl
      * @param  string|null  $cancelUrl
      * @param  string|null  $callbackUrl
-     * @return Response
+     * @return PaymentResponse
      */
     public function createPayment(
         Order $order,
@@ -102,7 +103,7 @@ class PaymentService extends BaseClient
         string $successUrl = null,
         string $cancelUrl = null,
         string $callbackUrl = null,
-    ): Response {
+    ): PaymentResponse {
         $payload = [
             'order_id' => $order->getAttributes()['id'],
             'facilitator' => $facilitator,
@@ -130,7 +131,9 @@ class PaymentService extends BaseClient
             ]);
         }
 
-        return $this->pendingRequest->post($this->url(), $payload);
+        $response = $this->pendingRequest->post($this->url(), $payload);
+
+        return new PaymentResponse($response);
     }
 
     /**
