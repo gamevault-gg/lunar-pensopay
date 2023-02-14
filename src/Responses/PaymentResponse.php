@@ -32,13 +32,13 @@ class PaymentResponse
 
     protected string $link;
 
-    protected string $callbackUrl;
+    protected ?string $callbackUrl;
 
-    protected string $successUrl;
+    protected ?string $successUrl;
 
-    protected string $cancelUrl;
+    protected ?string $cancelUrl;
 
-    protected string $expiresAt;
+    protected ?string $expiresAt;
 
     public function __construct(protected Response $response)
     {
@@ -58,10 +58,10 @@ class PaymentResponse
         $this->testMode = $object->testmode;
         $this->autoCapture = $object->autocapture;
         $this->link = $object->link;
-        $this->callbackUrl = $object->callback_url;
-        $this->successUrl = $object->success_url;
-        $this->cancelUrl = $object->cancel_url;
-        $this->expiresAt = $object->expires_at;
+        $this->callbackUrl = $object?->callback_url;
+        $this->successUrl = $object?->success_url;
+        $this->cancelUrl = $object?->cancel_url;
+        $this->expiresAt = $object?->expires_at;
     }
 
     /**
@@ -185,33 +185,33 @@ class PaymentResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCallbackUrl(): string
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSuccessUrl(): string
+    public function getSuccessUrl(): ?string
     {
         return $this->successUrl;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCancelUrl(): string
+    public function getCancelUrl(): ?string
     {
         return $this->cancelUrl;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getExpiresAt(): string
+    public function getExpiresAt(): ?string
     {
         return $this->expiresAt;
     }
