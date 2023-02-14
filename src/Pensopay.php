@@ -39,7 +39,7 @@ class Pensopay extends AbstractPayment
             FacilitatorEnum::Creditcard
         );
 
-        if (! in_array($paymentResponse->getState(), [
+        if (in_array($paymentResponse->getState(), [
             PaymentStateEnum::Rejected,
             PaymentStateEnum::Canceled,
         ])) {
@@ -70,7 +70,7 @@ class Pensopay extends AbstractPayment
             }
         }
 
-        return new PaymentAuthorize(true);
+        return new PaymentAuthorize(true, $paymentResponse->getLink());
     }
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund
@@ -90,7 +90,7 @@ class Pensopay extends AbstractPayment
             'type' => $paymentResponse->transactionType(),
             'driver' => 'pensopay',
             'amount' => $paymentResponse->getAmount(),
-            'reference' => $paymentResponse->getReference(),
+            'reference' => $paymentResponse->getId(),
             'status' => $paymentResponse->getState(),
             'notes' => null,
             'card_type' => null,
@@ -106,7 +106,7 @@ class Pensopay extends AbstractPayment
                 'captured' => $paymentResponse->getCaptured(),
                 'refunded' => $paymentResponse->getRefunded(),
                 'expires_at' => $paymentResponse->getExpiresAt(),
-                'pensopay_payment_id' => $paymentResponse->getId(),
+                'pensopay_reference' => $paymentResponse->getReference(),
                 'autocapture' => $paymentResponse->isAutoCapture(),
                 'testmode' => $paymentResponse->isTestMode(),
                 'facilitator' => $paymentResponse->getFacilitator(),
