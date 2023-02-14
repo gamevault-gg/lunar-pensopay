@@ -2,7 +2,6 @@
 
 namespace Gamevault\Pensopay;
 
-use Gamevault\Pensopay\Commands\PensopayCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
