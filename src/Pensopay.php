@@ -93,7 +93,7 @@ class Pensopay extends AbstractPayment
             'reference' => $paymentResponse->getId(),
             'status' => $paymentResponse->getState(),
             'notes' => null,
-            'card_type' => null,
+            'card_type' => 'pensopay',
             'last_four' => null,
             'captured_at' => $paymentResponse->isSuccessful() ? ($paymentResponse->transactionType() == 'capture' ? now() : null) : null,
             'meta' => [
