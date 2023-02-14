@@ -105,8 +105,8 @@ class PaymentService extends BaseClient
             'facilitator' => $facilitator,
             'amount' => $order->total,
             'currency' => $order->currency_code,
-            'testmode' => config('services.pensopay.testmode'),
-            'autocapture' => config('services.pensopay.autoCapture'),
+            'testmode' => config('pensopay.testmode'),
+            'autocapture' => config('pensopay.policy'),
         ];
 
         if ($successUrl != null) {

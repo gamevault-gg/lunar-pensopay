@@ -14,8 +14,8 @@ return [
     | false - Don't take payment straight away and capture later.
     |
     */
+    'policy' => env('AUTO_CAPTURE', false),
     'url' => env('PENSOPAY_URL'),
     'token' => env('PENSOPAY_TOKEN'),
     'testmode' => env('PENSOPAY_TESTMODE'),
-    'autoCapture' => env('AUTO_CAPTURE', false),
 ];
