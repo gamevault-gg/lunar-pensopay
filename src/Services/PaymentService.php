@@ -101,7 +101,7 @@ class PaymentService extends BaseClient
         string $callbackUrl = null,
     ): PaymentResponse {
         //Pensopay requires at least 4 characters in order id
-        $orderIdPrefix = config('pensopay.testmode') ? 'live' : 'test';
+        $orderIdPrefix = config('pensopay.testmode') ? 'test' : 'live';
         $orderId = sprintf('%s-%s', $orderIdPrefix, $order->id);
 
         $payload = [
