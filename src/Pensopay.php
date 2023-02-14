@@ -41,12 +41,9 @@ class Pensopay extends AbstractPayment
             true
         );
 
-        //Ensure that it is primarly Pending or Authorized states
         if (! in_array($paymentResponse->getState(), [
             PaymentStateEnum::Rejected,
             PaymentStateEnum::Canceled,
-            PaymentStateEnum::Captured,
-            PaymentStateEnum::Refunded,
         ])) {
             return new PaymentAuthorize(
                 success: false,
@@ -95,7 +92,7 @@ class Pensopay extends AbstractPayment
             'type' => $paymentResponse->transactionType(),
             'driver' => 'pensopay',
             'amount' => $paymentResponse->getAmount(),
-            'reference' => $paymentResponse->getId(), //ToDo might be the PaymentResponse Reference instead
+            'reference' => $paymentResponse->getReference(),
             'status' => $paymentResponse->getState(),
             'notes' => null,
             'card_type' => null,
@@ -109,6 +106,10 @@ class Pensopay extends AbstractPayment
                     'cancel_url' => $paymentResponse->getCancelUrl(),
                 ],
                 'expires_at' => $paymentResponse->getExpiresAt(),
+                'pensopay_payment_id' => $paymentResponse->getId(),
+                'autocapture' => $paymentResponse->isAutoCapture(),
+                'testmode' => $paymentResponse->isTestMode(),
+                'facilitator' => $paymentResponse->getFacilitator(),
             ],
         ];
         $this->order->transactions()->create($data);
