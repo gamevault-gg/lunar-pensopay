@@ -86,11 +86,11 @@ class PaymentService extends BaseClient
     /**
      * Create a new payment in the pending state, once the user has paid state will change to authorized and we'll send a callback
      *
-     * @param Order $order
-     * @param FacilitatorEnum $facilitator
-     * @param string|null $successUrl
-     * @param string|null $cancelUrl
-     * @param string|null $callbackUrl
+     * @param  Order  $order
+     * @param  FacilitatorEnum  $facilitator
+     * @param  string|null  $successUrl
+     * @param  string|null  $cancelUrl
+     * @param  string|null  $callbackUrl
      * @return PaymentResponse
      */
     public function createPayment(
