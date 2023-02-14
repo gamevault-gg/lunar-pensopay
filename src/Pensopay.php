@@ -37,7 +37,6 @@ class Pensopay extends AbstractPayment
         $paymentResponse = $this->paymentService->createPayment(
             $this->order,
             FacilitatorEnum::Creditcard,
-            config('pensopay.policy'),
             true
         );
 
