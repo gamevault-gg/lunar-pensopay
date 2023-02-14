@@ -36,8 +36,7 @@ class Pensopay extends AbstractPayment
         //ToDo handle facilitator better
         $paymentResponse = $this->paymentService->createPayment(
             $this->order,
-            FacilitatorEnum::Creditcard,
-            true
+            FacilitatorEnum::Creditcard
         );
 
         if (! in_array($paymentResponse->getState(), [
