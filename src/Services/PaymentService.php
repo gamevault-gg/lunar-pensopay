@@ -107,7 +107,7 @@ class PaymentService extends BaseClient
         $payload = [
             'order_id' => $orderId,
             'facilitator' => $facilitator,
-            'amount' => $order->total,
+            'amount' => intval($order->total),
             'currency' => $order->currency_code,
             'testmode' => config('pensopay.testmode'),
             'autocapture' => config('pensopay.policy'),
