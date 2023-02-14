@@ -9,9 +9,8 @@ abstract class BaseClient
 {
     public function __construct(public PendingRequest $pendingRequest)
     {
-        $settings = config('services.pensopay');
-        $this->pendingRequest = Http::baseUrl($settings['url'])
-            ->withToken($settings['token'])
+        $this->pendingRequest = Http::baseUrl(config('services.pensopay.url'))
+            ->withToken(config('services.pensopay.token'))
             ->asJson()
             ->acceptJson()
             ->throw();

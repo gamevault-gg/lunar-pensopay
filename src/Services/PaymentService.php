@@ -86,31 +86,27 @@ class PaymentService extends BaseClient
     /**
      * Create a new payment in the pending state, once the user has paid state will change to authorized and we'll send a callback
      *
-     * @param  Order  $order
-     * @param  FacilitatorEnum  $facilitator
-     * @param  bool  $autoCapture
-     * @param  bool  $testMode
-     * @param  string|null  $successUrl
-     * @param  string|null  $cancelUrl
-     * @param  string|null  $callbackUrl
+     * @param Order $order
+     * @param FacilitatorEnum $facilitator
+     * @param string|null $successUrl
+     * @param string|null $cancelUrl
+     * @param string|null $callbackUrl
      * @return PaymentResponse
      */
     public function createPayment(
         Order $order,
         FacilitatorEnum $facilitator,
-        bool $autoCapture = false,
-        bool $testMode = false,
         string $successUrl = null,
         string $cancelUrl = null,
         string $callbackUrl = null,
     ): PaymentResponse {
         $payload = [
-            'order_id' => $order->getAttributes()['id'],
+            'order_id' => $order->id,
             'facilitator' => $facilitator,
-            'amount' => $order->getAttributes()['total'],
-            'currency' => $order->getAttributes()['currency_code'],
-            'testmode' => $testMode,
-            'autocapture' => $autoCapture,
+            'amount' => $order->total,
+            'currency' => $order->currency_code,
+            'testmode' => config('services.pensopay.testmode'),
+            'autocapture' => config('services.pensopay.autoCapture'),
         ];
 
         if ($successUrl != null) {
