@@ -103,6 +103,8 @@ class Pensopay extends AbstractPayment
                     'success_url' => $paymentResponse->getSuccessUrl(),
                     'cancel_url' => $paymentResponse->getCancelUrl(),
                 ],
+                'captured' => $paymentResponse->getCaptured(),
+                'refunded' => $paymentResponse->getRefunded(),
                 'expires_at' => $paymentResponse->getExpiresAt(),
                 'pensopay_payment_id' => $paymentResponse->getId(),
                 'autocapture' => $paymentResponse->isAutoCapture(),

@@ -49,12 +49,12 @@ class PaymentResponse
         $this->orderId = $object->order_id;
         $this->type = $object->type;
         $this->amount = $object->amount;
-        $this->captured = $object->captured; //ToDo cast til bool
-        $this->refunded = $object->refunded; //ToDo cast til bool
+        $this->captured = $object->captured;
+        $this->refunded = $object->refunded;
         $this->currency = $object->currency;
         $this->state = $object->state;
         $this->facilitator = $object->facilitator;
-        $this->reference = $object->refrence;
+        $this->reference = $object->reference;
         $this->testMode = $object->testmode;
         $this->autoCapture = $object->autocapture;
         $this->link = $object->link;
@@ -113,17 +113,17 @@ class PaymentResponse
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function isCaptured(): bool
+    public function getCaptured(): int
     {
         return $this->captured;
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function isRefunded(): bool
+    public function getRefunded(): int
     {
         return $this->refunded;
     }
