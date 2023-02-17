@@ -26,7 +26,7 @@ class ProcessPensopayCallbackJob extends ProcessWebhookJob
 
         $previousTransaction->order->transactions()->create([
             'parent_transaction_id' => $previousTransaction->id,
-            'success' => 'success',
+            'success' => true,
             'type' => $paymentType,
             'driver' => 'pensopay',
             'amount' => $payload['amount'],
