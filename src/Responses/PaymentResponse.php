@@ -64,153 +64,96 @@ class PaymentResponse
         $this->expiresAt = $object?->expires_at;
     }
 
-    /**
-     * @return bool
-     */
     public function isSuccessful(): bool
     {
         return $this->response->successful();
     }
 
-    /**
-     * @return string
-     */
     public function transactionType(): string
     {
         return $this->isAutoCapture() ? 'capture' : 'intent';
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getOrderId(): string
     {
         return $this->orderId;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    /**
-     * @return int
-     */
     public function getCaptured(): int
     {
         return $this->captured;
     }
 
-    /**
-     * @return int
-     */
     public function getRefunded(): int
     {
         return $this->refunded;
     }
 
-    /**
-     * @return string
-     */
     public function getCurrency(): string
     {
         return $this->currency;
     }
 
-    /**
-     * @return string
-     */
     public function getState(): string
     {
         return $this->state;
     }
 
-    /**
-     * @return string
-     */
     public function getFacilitator(): string
     {
         return $this->facilitator;
     }
 
-    /**
-     * @return string
-     */
     public function getReference(): string
     {
         return $this->reference;
     }
 
-    /**
-     * @return bool
-     */
     public function isTestMode(): bool
     {
         return $this->testMode;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoCapture(): bool
     {
         return $this->autoCapture;
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return $this->link;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSuccessUrl(): ?string
     {
         return $this->successUrl;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCancelUrl(): ?string
     {
         return $this->cancelUrl;
     }
 
-    /**
-     * @return string|null
-     */
     public function getExpiresAt(): ?string
     {
         return $this->expiresAt;
