@@ -85,9 +85,15 @@ class Pensopay extends AbstractPayment
 
     private function storeTransaction(PaymentResponse $paymentResponse)
     {
+        $paymentType = match ($paymentResponse->getState()) {
+            'pending', 'authorized' => 'intent',
+            'captured' => 'capture',
+            'refunded' => 'refund',
+        };
+
         $data = [
             'success' => $paymentResponse->isSuccessful(),
-            'type' => $paymentResponse->transactionType(),
+            'type' => $paymentType,
             'driver' => 'pensopay',
             'amount' => $paymentResponse->getAmount(),
             'reference' => $paymentResponse->getId(),
@@ -95,7 +101,7 @@ class Pensopay extends AbstractPayment
             'notes' => null,
             'card_type' => 'pensopay',
             'last_four' => null,
-            'captured_at' => $paymentResponse->isSuccessful() ? ($paymentResponse->transactionType() == 'capture' ? now() : null) : null,
+            'captured_at' => $paymentResponse->isSuccessful() ? ($paymentResponse->getState() == 'captured' ? now() : null) : null,
             'meta' => [
                 'urls' => [
                     'link' => $paymentResponse->getLink(),

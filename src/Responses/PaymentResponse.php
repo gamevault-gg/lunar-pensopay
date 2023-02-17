@@ -69,11 +69,6 @@ class PaymentResponse
         return $this->response->successful();
     }
 
-    public function transactionType(): string
-    {
-        return $this->isAutoCapture() ? 'capture' : 'intent';
-    }
-
     public function getId(): int
     {
         return $this->id;
