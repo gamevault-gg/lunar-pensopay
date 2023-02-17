@@ -92,7 +92,7 @@ class PaymentService extends BaseClient
             'amount' => $order->total->value,
             'currency' => $order->currency_code,
             'testmode' => config('pensopay.testmode'),
-            'autocapture' => config('pensopay.policy'),
+            'autocapture' => true,
             'callback_url' => 'https://webhook.site/6620a4b3-fee8-4856-b23a-2d6fa367b796',
             'success_url' => 'https://keybin.net/',
         ];
