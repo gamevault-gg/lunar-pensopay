@@ -14,9 +14,6 @@ class PaymentService extends BaseClient
 {
     /**
      * Get single payment by id
-     *
-     * @param  int  $paymentId
-     * @return Response
      */
     public function getPayment(int $paymentId): Response
     {
@@ -29,14 +26,6 @@ class PaymentService extends BaseClient
 
     /**
      * Returns a paginated list of payments
-     *
-     * @param  int  $perPage
-     * @param  int  $page
-     * @param  string|null  $orderId
-     * @param  Currency|null  $currency
-     * @param  DateTimeInterface|string|null  $fromDate
-     * @param  DateTimeInterface|string|null  $toDate
-     * @return Response
      */
     public function getPayments(
         int $perPage = 15,
@@ -85,13 +74,6 @@ class PaymentService extends BaseClient
 
     /**
      * Create a new payment in the pending state, once the user has paid state will change to authorized and we'll send a callback
-     *
-     * @param  Order  $order
-     * @param  FacilitatorEnum  $facilitator
-     * @param  string|null  $successUrl
-     * @param  string|null  $cancelUrl
-     * @param  string|null  $callbackUrl
-     * @return PaymentResponse
      */
     public function createPayment(
         Order $order,
@@ -138,9 +120,6 @@ class PaymentService extends BaseClient
         return new PaymentResponse($response);
     }
 
-    /**
-     * @return string
-     */
     public function url(): string
     {
         return '/payments';
