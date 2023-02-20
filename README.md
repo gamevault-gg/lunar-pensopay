@@ -5,15 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/gamevault/lunar-pensopay/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/gamevault/lunar-pensopay/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/gamevault/lunar-pensopay.svg?style=flat-square)](https://packagist.org/packages/gamevault/lunar-pensopay)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/lunar-pensopay.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/lunar-pensopay)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Easily integrate Pensopay into Lunar with the community payment driver for Pensopay. This integration are based on [PensoPay API docs](https://docs.pensopay.com/reference/getting-started-with-your-api)
 
 ## Installation
 
@@ -22,38 +14,75 @@ You can install the package via composer:
 ```bash
 composer require gamevault/lunar-pensopay
 ```
+This package uses the spatie [laravel-webhook-client](https://github.com/spatie/laravel-webhook-client) package to handle the callbacks sent from Pensopay.
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="lunar-pensopay-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
+You can publish the configs and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="lunar-pensopay-config"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="webhook-client-config"
+php artisan migrate
 ```
 
-This is the contents of the published config file:
+This is the contents of the published pensopay config file:
 
 ```php
 return [
+    'policy' => env('AUTO_CAPTURE', false),
+    'url' => env('PENSOPAY_URL', 'https://api.pensopay.com/v1'),
+    'token' => env('PENSOPAY_TOKEN'),
+    'testmode' => env('PENSOPAY_TESTMODE', false),
+];
+```
+The webhook-client.php should look like the following:
+```php
+<?php
+
+return [
+    'configs' => [
+        [
+            'name' => 'pensopay-webhook',
+            'signing_secret' => config('PENSOPAY_SIGNING_SECRET'),
+            'signature_header_name' => 'pensopay-signature',
+            'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+            'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
+            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'process_webhook_job' => \Gamevault\Pensopay\Jobs\ProcessPensopayCallbackJob::class,
+        ],
+    ],
+
+    /*
+     * The integer amount of days after which models should be deleted.
+     *
+     * 7 deletes all records after 1 week. Set to null if no models should be deleted.
+     */
+    'delete_after_days' => 30,
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="lunar-pensopay-views"
+The webhook endpoint can be defined anywhere in the route files with the following:
+```php
+Route::webhooks('pensopay-webhook', 'pensopay-webhook');
 ```
 
 ## Usage
-
+To get started the payment driver must be registered at the AppServiceProvider:
 ```php
-$pensopay = new Gamevault\Pensopay();
-echo $pensopay->echoPhrase('Hello, Gamevault!');
+public function register()
+{
+    Payments::extend('pensopay', function ($app) {
+       return $app->make(\Gamevault\Pensopay\Pensopay::class);
+    });
+}
+```
+
+The payment methods can be invoked like the following:
+```php
+/** @var Pensopay $paymentDriver */
+$paymentDriver = Payments::driver('pensopay');
+$paymentDriver->cart($cart);
+$paymentAuthorize = $paymentDriver->authorize();
 ```
 
 ## Testing
