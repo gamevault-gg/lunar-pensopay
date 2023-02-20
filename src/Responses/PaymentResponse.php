@@ -14,9 +14,9 @@ class PaymentResponse
 
     protected int $amount;
 
-    protected bool $captured;
+    protected int $captured;
 
-    protected bool $refunded;
+    protected int $refunded;
 
     protected string $currency;
 

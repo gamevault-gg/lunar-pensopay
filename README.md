@@ -1,4 +1,4 @@
-# A Lunar community payment driver for Pensopay
+# A community Lunar payment driver for Pensopay
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gamevault/lunar-pensopay.svg?style=flat-square)](https://packagist.org/packages/gamevault/lunar-pensopay)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/gamevault/lunar-pensopay/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/gamevault/lunar-pensopay/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -67,7 +67,7 @@ Route::webhooks('pensopay-webhook', 'pensopay-webhook');
 ```
 
 ## Usage
-To get started the payment driver must be registered at the AppServiceProvider:
+To get started, the payment driver must be registered at the AppServiceProvider:
 ```php
 public function register()
 {
