@@ -9,6 +9,7 @@ use Gamevault\Pensopay\Responses\PaymentResponse;
 use Illuminate\Http\Client\Response;
 use Lunar\Models\Currency;
 use Lunar\Models\Order;
+use Lunar\Models\Transaction;
 
 class PaymentService extends BaseClient
 {
@@ -116,6 +117,32 @@ class PaymentService extends BaseClient
         }
 
         $response = $this->pendingRequest->post($this->url(), $payload);
+
+        return new PaymentResponse($response);
+    }
+
+    public function refund(Transaction $transaction, int $amount): PaymentResponse
+    {
+        $payload = [
+            'amount' => $amount,
+        ];
+
+        $url = sprintf($this->url().'/%s/refund', $transaction->reference);
+
+        $response = $this->pendingRequest->post($url, $payload);
+
+        return new PaymentResponse($response);
+    }
+
+    public function capture(Transaction $transaction, int $amount): PaymentResponse
+    {
+        $payload = [
+            'amount' => $amount,
+        ];
+
+        $url = sprintf($this->url().'/%s/capture', $transaction->reference);
+
+        $response = $this->pendingRequest->post($url, $payload);
 
         return new PaymentResponse($response);
     }

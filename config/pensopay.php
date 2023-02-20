@@ -15,7 +15,7 @@ return [
     |
     */
     'policy' => env('AUTO_CAPTURE', false),
-    'url' => env('PENSOPAY_URL'),
+    'url' => env('PENSOPAY_URL', 'https://api.pensopay.com/v1'),
     'token' => env('PENSOPAY_TOKEN'),
-    'testmode' => env('PENSOPAY_TESTMODE'),
+    'testmode' => env('PENSOPAY_TESTMODE', false),
 ];

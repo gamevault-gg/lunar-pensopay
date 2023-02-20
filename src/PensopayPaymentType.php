@@ -12,7 +12,7 @@ use Lunar\Base\DataTransferObjects\PaymentRefund;
 use Lunar\Models\Transaction;
 use Lunar\PaymentTypes\AbstractPayment;
 
-class Pensopay extends AbstractPayment
+class PensopayPaymentType extends AbstractPayment
 {
     public function __construct(protected PaymentService $paymentService)
     {
@@ -75,15 +75,37 @@ class Pensopay extends AbstractPayment
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund
     {
+        $paymentResponse = $this->paymentService->refund($transaction, $amount);
+
+        if (! $paymentResponse->isSuccessful()) {
+            return new PaymentRefund(
+                success: false,
+                message: 'Something went wrong'
+            );
+        }
+
+        $this->storeTransaction($paymentResponse, $transaction->id);
+
         return new PaymentRefund(true);
     }
 
     public function capture(Transaction $transaction, $amount = 0): PaymentCapture
     {
+        $paymentResponse = $this->paymentService->capture($transaction, $amount);
+
+        if (! $paymentResponse->isSuccessful()) {
+            return new PaymentCapture(
+                success: false,
+                message: 'Something went wrong'
+            );
+        }
+
+        $this->storeTransaction($paymentResponse, $transaction);
+
         return new PaymentCapture(true);
     }
 
-    private function storeTransaction(PaymentResponse $paymentResponse)
+    private function storeTransaction(PaymentResponse $paymentResponse, ?Transaction $parentTransaction = null)
     {
         $paymentType = match ($paymentResponse->getState()) {
             'pending', 'authorized' => 'intent',
@@ -118,6 +140,15 @@ class Pensopay extends AbstractPayment
                 'facilitator' => $paymentResponse->getFacilitator(),
             ],
         ];
-        $this->order->transactions()->create($data);
+
+        if ($parentTransaction != null) {
+            $data = array_merge($data, [
+                'parent_transaction_id' => $parentTransaction->id,
+            ]);
+
+            $parentTransaction->order->transactions()->create($data);
+        } else {
+            $this->order->transactions()->create($data);
+        }
     }
 }
