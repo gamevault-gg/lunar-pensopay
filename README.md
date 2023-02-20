@@ -78,7 +78,7 @@ To get started, the payment driver must be registered at the AppServiceProvider:
 public function register()
 {
     Payments::extend('pensopay', function ($app) {
-       return $app->make(\Gamevault\Pensopay\Pensopay::class);
+       return $app->make(\Gamevault\Pensopay\PensopayPaymentType::class);
     });
 }
 ```
