@@ -85,6 +85,7 @@ class PaymentService extends BaseClient
     ): PaymentResponse {
         //Pensopay requires at least 4 characters in order id
         $orderIdPrefix = config('pensopay.testmode') ? 'test' : 'live';
+        //ToDo Still for testing
         $orderId = sprintf('%s-%s-%s', $orderIdPrefix, rand(1, 1000000), $order->id);
 
         $payload = [
