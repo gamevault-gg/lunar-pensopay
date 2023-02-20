@@ -7,6 +7,12 @@
 
 Easily integrate Pensopay into Lunar with the community payment driver for Pensopay. This integration are based on [PensoPay API docs](https://docs.pensopay.com/reference/getting-started-with-your-api)
 
+## ToDo
+There is still some minor stuff to take into consideration
+- [ ] Defining success_url, cancel_url and callback_url urls with id params in the urls.
+- [ ] Dynamic selection of facilitator (payment types: creditcard, viabill, expressbank, paypal and anyday).
+- [ ] Tests.
+
 ## Installation
 
 You can install the package via composer:
