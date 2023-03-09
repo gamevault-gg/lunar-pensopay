@@ -33,10 +33,13 @@ class PensopayPaymentType extends AbstractPayment
             );
         }
 
-        //ToDo handle facilitator better
+        if (!isset($this->data['facilitator'])) {
+            $this->data['facilitator'] = FacilitatorEnum::Creditcard;
+        }
+
         $paymentResponse = $this->paymentService->createPayment(
             $this->order,
-            FacilitatorEnum::Creditcard
+            $this->data['facilitator']
         );
 
         if (in_array($paymentResponse->getState(), [
