@@ -33,7 +33,7 @@ class PensopayPaymentType extends AbstractPayment
             );
         }
 
-        if (!isset($this->data['facilitator'])) {
+        if (! isset($this->data['facilitator'])) {
             $this->data['facilitator'] = FacilitatorEnum::Creditcard;
         }
 
